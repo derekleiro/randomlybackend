@@ -14,6 +14,8 @@ const like_route = require("./routes/like");
 const post_route = require("./routes/post");
 const save_route = require("./routes/save");
 const notifications_route = require("./routes/notifications");
+const messenger_route = require("./routes/messenger");
+
 
 const HttpError = require("./models/http-error");
 
@@ -28,7 +30,7 @@ admin.initializeApp({
 });
 
 app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", process.env.SERVER); // In the second argument, you can limit it to your domain or set it to * for access by everyone
+	res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_SERVER); // In the second argument, you can limit it to your domain or set it to * for access by everyone
 	res.setHeader("Access-Control-Allow-Method", "POST, GET, PUT, PATH, DELETE");
 	res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 	next();
@@ -45,6 +47,7 @@ app.use(like_route);
 app.use(post_route);
 app.use(save_route);
 app.use(notifications_route);
+app.use(messenger_route);
 
 app.use((req, res, next) => {
 	const error = new HttpError("Could not find this route", 404);
@@ -69,7 +72,7 @@ mongoose
 	})
 	.then((result) => {
 		app.listen(5000, () => {
-			console.log("Server is running at localhost:5000");
+			console.log(`Server is running at ${process.env.SERVER}`);
 		});
 	})
 	.catch((e) => {
